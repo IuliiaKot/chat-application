@@ -3,6 +3,8 @@ $(function(){
 
   var name = makeid();
   $('#user').val(name);
+  socket.emit('chat message', 'System', '<b>' + name + '</b> has joined the discussion');
+
 
   $('form').on('submit', function(){
     var from  = $('#user').val();
@@ -13,32 +15,33 @@ $(function(){
     return false;
   })
 
-  socket.on('chat message', function(from, msg, time){
-    var me = $('#user').val();
-    var iclass = (from == me) ? 'me' : 'you';
-    var divclassmessage = (from == me) ? 'me-message float-right' : 'you-message';
-    var classDiv = (from == me) ? 'align-right':'';
-    var divClassTime = (from == me) ? 'time-right':'time-left';
-    var from = (from == me) ? 'Me' : from;
-
-    var text_template = `<li class='clearfix'>
-      <div class='message-data ${classDiv}'>
-      <span class='message-data-name'>${from}</span>
-      <i class='fa fa-circle ${iclass}'></i></div>
-      <div class='message ${divclassmessage}'>${msg}</div>
-      <span class='${divClassTime}'>${time}</span>
-      </li>`
-
-    // $('#messages').append('<li><b style="color:' + color + '">' + from + '</b>: ' + msg + '</li>');
-    $('.chat-ul').append(text_template)
-  });
-
 });
 
 function notifyTyping(){
   var user = $("#user").val();
   socket.emit('notify user', user);
-}
+};
+
+
+socket.on('chat message', function(from, msg, time){
+  var me = $('#user').val();
+  var iclass = (from == me) ? 'me' : 'you';
+  var divclassmessage = (from == me) ? 'me-message float-right' : 'you-message';
+  var classDiv = (from == me) ? 'align-right':'';
+  var divClassTime = (from == me) ? 'time-right':'time-left';
+  var from = (from == me) ? 'Me' : from;
+
+  var text_template = `<li class='clearfix'>
+    <div class='message-data ${classDiv}'>
+    <span class='message-data-name'>${from}</span>
+    <i class='fa fa-circle ${iclass}'></i></div>
+    <div class='message ${divclassmessage}'>${msg}</div>
+    <span class='${divClassTime}'>${time}</span>
+    </li>`
+
+  // $('#messages').append('<li><b style="color:' + color + '">' + from + '</b>: ' + msg + '</li>');
+  $('.chat-ul').append(text_template)
+});
 
 
 socket.on('notify user', function(user){
@@ -48,6 +51,8 @@ socket.on('notify user', function(user){
   }
   setTimeout(function(){ $('#notifyUser').text(''); }, 1000);
 })
+
+
 
 function makeid() {
   var text = "";
