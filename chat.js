@@ -7,23 +7,27 @@ $(function(){
   $('form').on('submit', function(){
     var from  = $('#user').val();
     var msg = $('#m').val();
-    socket.emit('char message', from, msg)
+    var time = new Date().toLocaleString();
+    socket.emit('char message', from, msg, time)
     $('#m').val(' ');
     return false;
   })
 
-  socket.on('chat message', function(from, msg){
+  socket.on('chat message', function(from, msg, time){
     var me = $('#user').val();
     var iclass = (from == me) ? 'me' : 'you';
-    var divclass = (from == me) ? 'me-message float-right' : 'you-message';
+    var divclassmessage = (from == me) ? 'me-message float-right' : 'you-message';
     var classDiv = (from == me) ? 'align-right':'';
+    var divClassTime = (from == me) ? 'time-right':'time-left';
     var from = (from == me) ? 'Me' : from;
 
     var text_template = `<li class='clearfix'>
       <div class='message-data ${classDiv}'>
       <span class='message-data-name'>${from}</span>
       <i class='fa fa-circle ${iclass}'></i></div>
-      <div class='message ${divclass}'>${msg}</div></li>`
+      <div class='message ${divclassmessage}'>${msg}</div>
+      <span class='${divClassTime}'>${time}</span>
+      </li>`
 
     // $('#messages').append('<li><b style="color:' + color + '">' + from + '</b>: ' + msg + '</li>');
     $('.chat-ul').append(text_template)
