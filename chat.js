@@ -39,7 +39,8 @@ socket.on('chat message', function(from, msg, time){
     <span class='${divClassTime}'>${time}</span></li>`
 
   // $('#messages').append('<li><b style="color:' + color + '">' + from + '</b>: ' + msg + '</li>');
-  $('.chat-ul').append(text_template)
+    $('.chat-ul').append(text_template)
+    window.scrollBy(0, 1000)
 });
 
 
