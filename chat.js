@@ -36,8 +36,7 @@ socket.on('chat message', function(from, msg, time){
     <span class='message-data-name'>${from}</span>
     <i class='fa fa-circle ${iclass}'></i></div>
     <div class='message ${divclassmessage}'>${msg}</div>
-    <span class='${divClassTime}'>${time}</span>
-    </li>`
+    <span class='${divClassTime}'>${time}</span></li>`
 
   // $('#messages').append('<li><b style="color:' + color + '">' + from + '</b>: ' + msg + '</li>');
   $('.chat-ul').append(text_template)

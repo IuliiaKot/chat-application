@@ -142,14 +142,14 @@ h1, h2, h3, h4, h5, h6 {
     color: #003366;
 }
 
-.time-right {
+.time-right:after {
   float: right;
-  color: grey;
-  padding-bottom: 10px;
+  color: green;
+  /*padding-bottom: 10px;*/
 }
 
-.time-left {
+.time-left:after {
   float: left;
   color: grey;
-  padding-bottom: 10px;
+  /*padding-bottom: 10px;*/
 }
