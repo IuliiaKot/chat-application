@@ -1,16 +1,16 @@
-  var socket = io();
+var socket = io();
 $(function(){
 
   var name = makeid();
   $('#user').val(name);
-  socket.emit('chat message', 'System', '<b>' + name + '</b> has joined the discussion');
+  socket.emit('chat message', 'System', '<b>' + name + '</b> has joined the discussion', new Date().toLocaleString());
 
 
   $('form').on('submit', function(){
     var from  = $('#user').val();
     var msg = $('#m').val();
     var time = new Date().toLocaleString();
-    socket.emit('char message', from, msg, time)
+    socket.emit('chat message', from, msg, time)
     $('#m').val(' ');
     return false;
   })
