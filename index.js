@@ -13,11 +13,18 @@ app.get('/', function(req, res) {
 
 io.on('connection', function(socket) {
   socket.on('chat message', function(from, msg, time){
+    console.log('1')
+    console.log(from)
     io.emit('chat message', from, msg, time)
   })
 
   socket.on('notify user', function(user){
     io.emit('notify user', user)
+  })
+
+  socket.on('disconnect', function(username){
+    io.emit('disconnect', username)
+    // console.log('disconnect')
   })
 })
 

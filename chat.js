@@ -3,8 +3,8 @@ $(function(){
 
   var name = makeid();
   $('#user').val(name);
-  socket.emit('chat message', 'System', '<b>' + name + '</b> has joined the discussion', new Date().toLocaleString());
-
+  var time = new Date().toLocaleString();
+  socket.emit('chat message', 'System', '<b>' + name + '</b> has joined the discussion', time);
 
   $('form').on('submit', function(){
     var from  = $('#user').val();
@@ -24,6 +24,7 @@ function notifyTyping(){
 
 
 socket.on('chat message', function(from, msg, time){
+  console.log('2')
   var me = $('#user').val();
   var iclass = (from == me) ? 'me' : 'you';
   var divclassmessage = (from == me) ? 'me-message float-right' : 'you-message';
@@ -50,6 +51,11 @@ socket.on('notify user', function(user){
     $('#notifyUser').text(user + ' is typing ...');
   }
   setTimeout(function(){ $('#notifyUser').text(''); }, 1000);
+})
+
+socket.on('disconnect', function(){
+  console.log('4')
+  socket.emit('chat message', 'System', 'A user disconnected')
 })
 
 
