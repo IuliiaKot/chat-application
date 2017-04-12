@@ -11,11 +11,18 @@ app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, '../chat-application', 'index.html'))
 });
 
+var usernames = {};
+var room = 'general';
+
 io.on('connection', function(socket) {
   socket.on('chat message', function(from, msg, time){
-    console.log('1')
-    console.log(from)
     io.emit('chat message', from, msg, time)
+  })
+
+  socket.on('adduser', function(username){
+    socket.username = username;
+    usernames[username] = username;
+    io.emit('chat message', 'SERVER', username + ' has connected');
   })
 
   socket.on('notify user', function(user){

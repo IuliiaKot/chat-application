@@ -1,30 +1,10 @@
 var socket = io();
-$(function(){
-
-  var name = makeid();
-  $('#user').val(name);
-  var time = new Date().toLocaleString();
-  socket.emit('chat message', 'System', '<b>' + name + '</b> has joined the discussion', time);
-
-  $('form').on('submit', function(){
-    var from  = $('#user').val();
-    var msg = $('#m').val();
-    var time = new Date().toLocaleString();
-    socket.emit('chat message', from, msg, time)
-    $('#m').val(' ');
-    return false;
-  })
-
+socket.on('connect', function(){
+  socket.emit('adduser', prompt('What is your name?'))
 });
 
-function notifyTyping(){
-  var user = $("#user").val();
-  socket.emit('notify user', user);
-};
-
-
-socket.on('chat message', function(from, msg, time){
-  console.log('2')
+socket.on('chat message', function(from, msg, time, room){
+  console.log(room)
   var me = $('#user').val();
   var iclass = (from == me) ? 'me' : 'you';
   var divclassmessage = (from == me) ? 'me-message float-right' : 'you-message';
@@ -39,11 +19,38 @@ socket.on('chat message', function(from, msg, time){
     <div class='message ${divclassmessage}'>${msg}</div>
     <span class='${divClassTime}'>${time}</span></li>`
 
-  // $('#messages').append('<li><b style="color:' + color + '">' + from + '</b>: ' + msg + '</li>');
     $('.chat-ul').append(text_template)
     window.scrollBy(0, 1000)
 });
 
+$(function(){
+  var room;
+
+
+  // $('.choose-room').on('click', 'li', function(e) {
+  //   room = $(this).text();
+  // })
+
+  var name = makeid();
+  $('#user').val(name);
+  var time = new Date().toLocaleString();
+  // socket.emit('chat message', 'System', '<b>' + name + '</b> has joined the discussion', time);
+
+  $('form').on('submit', function(){
+    var from  = $('#user').val();
+    var msg = $('#m').val();
+    var time = new Date().toLocaleString();
+    socket.emit('chat message', from, msg, time, room)
+    $('#m').val(' ');
+    return false;
+  })
+
+});
+
+function notifyTyping(){
+  var user = $("#user").val();
+  socket.emit('notify user', user);
+};
 
 socket.on('notify user', function(user){
   var me = $('#user').val();
