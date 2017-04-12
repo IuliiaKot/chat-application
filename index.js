@@ -23,15 +23,18 @@ io.on('connection', function(socket) {
     socket.username = username;
     usernames[username] = username;
     io.emit('chat message', 'SERVER', username + ' has connected');
+    // socket.broadcast.emit('chat message','SERVER', `${username} has connected`);
+    io.emit('update-users-list', usernames)
   })
 
   socket.on('notify user', function(user){
     io.emit('notify user', user)
   })
 
-  socket.on('disconnect', function(username){
-    io.emit('disconnect', username)
-    // console.log('disconnect')
+  socket.on('disconnect', function(){
+    delete usernames[socket.username];
+    io.emit('upodate-users-list', usernames);
+    io.emit('chat message', 'SERVER', `${socket.username} has disconnected` )
   })
 })
 

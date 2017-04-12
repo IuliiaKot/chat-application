@@ -23,6 +23,14 @@ socket.on('chat message', function(from, msg, time, room){
     window.scrollBy(0, 1000)
 });
 
+socket.on('update-users-list', function(data){
+  $('#users').empty();
+  console.log(data)
+  $.each(data, function(key, value){
+    $('#users').append(`<div> ${key} </div>`)
+  })
+})
+
 $(function(){
   var room;
 
@@ -31,8 +39,6 @@ $(function(){
   //   room = $(this).text();
   // })
 
-  var name = makeid();
-  $('#user').val(name);
   var time = new Date().toLocaleString();
   // socket.emit('chat message', 'System', '<b>' + name + '</b> has joined the discussion', time);
 
@@ -60,10 +66,6 @@ socket.on('notify user', function(user){
   setTimeout(function(){ $('#notifyUser').text(''); }, 1000);
 })
 
-socket.on('disconnect', function(){
-  console.log('4')
-  socket.emit('chat message', 'System', 'A user disconnected')
-})
 
 
 
