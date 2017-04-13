@@ -12,18 +12,22 @@ app.get('/', function(req, res) {
 });
 
 var usernames = {};
-var room = 'general';
+var rooms = ['general', 'nyc', 'sf'];
 
 io.on('connection', function(socket) {
-  socket.on('chat message', function(from, msg, time){
-    io.emit('chat message', from, msg, time)
+  // form = socket.username;
+  socket.on('send message', function(from, msg, time){
+    console.log(socket.username);
+    io.emit('chat message', socket.username, msg, time)
   })
 
   socket.on('adduser', function(username){
     socket.username = username;
     usernames[username] = username;
-    io.emit('chat message', 'SERVER', username + ' has connected', new Date().toLocaleString());
-    // socket.broadcast.emit('chat message','SERVER', `${username} has connected`);
+    socket.room = rooms[0];
+    socket.join(rooms[0]);
+    socket.emit('chat message', 'SERVER', `you have connected to ${rooms[0]}`, new Date().toLocaleString(),username);
+    socket.broadcast.to(rooms[0]).emit('chat message','SERVER', `${username} has connected to this room`);
     io.emit('update-users-list', usernames)
   })
 

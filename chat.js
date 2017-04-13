@@ -3,9 +3,12 @@ socket.on('connect', function(){
   socket.emit('adduser', prompt('What is your name?'))
 });
 
-socket.on('chat message', function(from, msg, time, room){
-  console.log(room)
-  var me = $('#user').val();
+socket.on('chat message', function(from, msg, time, username){
+  // console.log(username)
+  $('#user').text(username);
+  var me = $('#user').text();
+  console.log(`${from}: from`);
+  console.log(`${me}: me`);
   var iclass = (from == me) ? 'me' : 'you';
   var divclassmessage = (from == me) ? 'me-message float-right' : 'you-message';
   var classDiv = (from == me) ? 'align-right':'';
@@ -23,33 +26,25 @@ socket.on('chat message', function(from, msg, time, room){
     window.scrollBy(0, 1000)
 });
 
-socket.on('update-users-list', function(data){
+socket.on('update-users-list', function(data, username){
+  $('#user').val(username);
   $('#users').empty();
-  console.log(data)
   $.each(data, function(key, value){
     $('#users').append(`<div> ${key} </div>`)
   })
 })
 
 $(function(){
-  var room;
-
-
-  // $('.choose-room').on('click', 'li', function(e) {
-  //   room = $(this).text();
-  // })
-
   var time = new Date().toLocaleString();
-  // socket.emit('chat message', 'System', '<b>' + name + '</b> has joined the discussion', time);
 
-  $('form').on('submit', function(){
+  $('form').on('submit', function() {
     var from  = $('#user').val();
     var msg = $('#m').val();
     var time = new Date().toLocaleString();
-    socket.emit('chat message', from, msg, time, room)
+    socket.emit('send message', from, msg, time)
     $('#m').val(' ');
     return false;
-  })
+  });
 
 });
 
@@ -65,16 +60,3 @@ socket.on('notify user', function(user){
   }
   setTimeout(function(){ $('#notifyUser').text(''); }, 1000);
 })
-
-
-
-
-function makeid() {
-  var text = "";
-  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-  for( var i=0; i < 5; i++ ) {
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
-  }
-  return text;
-}
