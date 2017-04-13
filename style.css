@@ -42,6 +42,19 @@ form #button {
 }
 #notifyUser { position: fixed; bottom: 42px; width: 100%; }
 
+.server-message {
+  background: grey;
+  font-style:italic;
+}
+.server-message::after{
+  /*background: grey;*/
+  /*margin-bottom: 15px;*/
+}
+
+.time-left-server {
+  color:  grey;
+  float: left;
+}
 
 
 
@@ -89,8 +102,18 @@ form #button {
 .chat .chat-history .me-message {
   background: #E9724C;
 }
+.chat .chat-history .server-message {
+  background: #ccc;
+}
 .chat .chat-history .me-message:after {
   border-color: #E9724C transparent;
+    right: 20px;
+    top: -15px;
+    left: auto;
+    bottom:auto;
+}
+.chat .chat-history .server-message:after {
+  border-color: #ccc transparent;
     right: 20px;
     top: -15px;
     left: auto;

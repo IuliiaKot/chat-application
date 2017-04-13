@@ -9,11 +9,17 @@ socket.on('chat message', function(from, msg, time, username){
   var me = $('#user').text();
   console.log(`${from}: from`);
   console.log(`${me}: me`);
-  var iclass = (from == me) ? 'me' : 'you';
-  var divclassmessage = (from == me) ? 'me-message float-right' : 'you-message';
-  var classDiv = (from == me) ? 'align-right':'';
-  var divClassTime = (from == me) ? 'time-right':'time-left';
-  var from = (from == me) ? 'Me' : from;
+  if (from === 'SERVER') {
+    divclassmessage ='server-message';
+    classDiv = '';
+    divClassTime = 'time-left-server';
+  } else {
+    var iclass = (from == me) ? 'me' : 'you';
+    var divclassmessage = (from == me) ? 'me-message float-right' : 'you-message';
+    var classDiv = (from == me) ? 'align-right':'';
+    var divClassTime = (from == me) ? 'time-right':'time-left';
+    var from = (from == me) ? 'Me' : from;
+  }
 
   var text_template = `<li class='clearfix'>
     <div class='message-data ${classDiv}'>
