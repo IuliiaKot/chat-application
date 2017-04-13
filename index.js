@@ -22,7 +22,7 @@ io.on('connection', function(socket) {
   socket.on('adduser', function(username){
     socket.username = username;
     usernames[username] = username;
-    io.emit('chat message', 'SERVER', username + ' has connected');
+    io.emit('chat message', 'SERVER', username + ' has connected', new Date().toLocaleString());
     // socket.broadcast.emit('chat message','SERVER', `${username} has connected`);
     io.emit('update-users-list', usernames)
   })
@@ -33,8 +33,8 @@ io.on('connection', function(socket) {
 
   socket.on('disconnect', function(){
     delete usernames[socket.username];
-    io.emit('upodate-users-list', usernames);
-    io.emit('chat message', 'SERVER', `${socket.username} has disconnected` )
+    io.emit('update-users-list', usernames);
+    io.emit('chat message', 'SERVER', `${socket.username} has disconnected`,new Date().toLocaleString())
   })
 })
 
