@@ -37,8 +37,24 @@ socket.on('update-users-list', function(data, username){
   $('#users').empty();
   $.each(data, function(key, value){
     $('#users').append(`<div> ${key} </div>`)
+  });
+});
+
+socket.on('updateroom', function(rooms, room){
+  $('#rooms').empty();
+  $.each(rooms, function(key, value){
+    if (value === room){
+        $('#rooms').append(`<div> ${value} </div>`)
+    } else {
+      $('#rooms').append(`<div><a href=# onClick=switchRoom('${value}')>${value}</a></div>`)
+
+    }
   })
 })
+
+function switchRoom(room){
+  socket.emit('switchroom', room);
+}
 
 $(function(){
   var time = new Date().toLocaleString();
