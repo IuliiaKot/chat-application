@@ -28,10 +28,10 @@ io.on('connection', function(socket) {
     socket.room = rooms[0];
     socket.join(rooms[0]);
 
-    socket.emit('chat message', 'SERVER', `you have connected to ${rooms[0]}`, new Date().toLocaleString(),username);
+    socket.emit('chat message', 'SERVER', `you have connected to ${rooms[0]}`, new Date().toLocaleString(), username);
     socket.broadcast.to(rooms[0]).emit('chat message','SERVER', `${username} has connected to this room`);
 
-    // io.emit('update-users-list', usernames)
+    io.emit('update-users-list', usernames);
     socket.emit('updateroom', rooms, rooms[0]);
   });
 
@@ -42,6 +42,7 @@ io.on('connection', function(socket) {
     socket.broadcast.to(socket.room).emit('chat message', 'SERVER', `${socket.username} has left this room`)
     socket.room = newRoom;
     socket.broadcast.to(newRoom).emit('chat message', 'SERVER', `${socket.username} has joined this room`)
+    socket.emit('updateroom', rooms, newRoom);
   });
 
   socket.on('notify user', function(user) {
@@ -52,6 +53,7 @@ io.on('connection', function(socket) {
     delete usernames[socket.username];
     io.emit('update-users-list', usernames);
     io.emit('chat message', 'SERVER', `${socket.username} has disconnected`, new Date().toLocaleString())
+    socket.leave(socket.room);
   });
 });
 
