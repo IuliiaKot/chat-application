@@ -15,28 +15,27 @@ var usernames = {};
 var rooms = ['general', 'nyc', 'sf'];
 
 io.on('connection', function(socket) {
-  // form = socket.username;
   socket.on('send message', function(from, msg, time) {
-    console.log(io.sockets.adapter.rooms );
-    io.sockets.in(socket.room).emit('chat message', socket.username, msg, time)
-  })
+    console.log(time);
+    io.sockets.in(socket.room).emit('chat message', socket.username, msg, time);
+  });
 
   socket.on('adduser', function(username) {
     socket.username = username;
     usernames[username] = username;
 
-    socket.room = rooms[0];
-    socket.join(rooms[0]);
+    socket.room = 'general';
+    socket.join('general');
 
-    socket.emit('chat message', 'SERVER', `you have connected to ${rooms[0]}`, new Date().toLocaleString(), username);
-    socket.broadcast.to(rooms[0]).emit('chat message','SERVER', `${username} has connected to this room`);
+    socket.emit('chat message', 'SERVER', `you have connected to ${'general'}`, new Date().toLocaleString(), username);
+    socket.broadcast.to('general').emit('chat message','SERVER', `${username} has connected to this room`);
 
     io.emit('update-users-list', usernames);
-    socket.emit('updateroom', rooms, rooms[0]);
+    socket.emit('updateroom', rooms, 'general');
   });
 
   socket.on('switchroom', function(newRoom) {
-    socket.leave(newRoom);
+    socket.leave(socket.room);
     socket.join(newRoom);
     socket.emit('chat message', 'SERVER', `you have connected to ${newRoom}`)
     socket.broadcast.to(socket.room).emit('chat message', 'SERVER', `${socket.username} has left this room`)
@@ -52,12 +51,12 @@ io.on('connection', function(socket) {
   socket.on('disconnect', function() {
     delete usernames[socket.username];
     io.emit('update-users-list', usernames);
-    io.emit('chat message', 'SERVER', `${socket.username} has disconnected`, new Date().toLocaleString())
+    socket.broadcast.to(socket.room).emit('chat message', 'SERVER', `${socket.username} has disconnected`, new Date().toLocaleString())
     socket.leave(socket.room);
   });
 });
 
 
 http.listen(port, function() {
-  console.log("listening on 5000")
+  console.log("listening on 5000");
 });

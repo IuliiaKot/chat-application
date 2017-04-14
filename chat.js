@@ -1,10 +1,9 @@
 var socket = io();
 socket.on('connect', function(){
-  socket.emit('adduser', prompt('What is your name?'))
+  socket.emit('adduser', prompt('What is your name?'));
 });
 
-socket.on('chat message', function(from, msg, time, username){
-  // console.log(username)
+socket.on('chat message', function(from, msg, time, username) {
   $('#user').text(username);
   var me = $('#user').text();
   console.log(`${from}: from`);
@@ -32,15 +31,16 @@ socket.on('chat message', function(from, msg, time, username){
     window.scrollBy(0, 1000)
 });
 
-socket.on('update-users-list', function(data, username){
+socket.on('update-users-list', function(data, username) {
+
   $('#user').val(username);
   $('#users').empty();
   $.each(data, function(key, value){
-    $('#users').append(`<div> ${key} </div>`)
+    $('#users').append(`<div> ${key} </div>`);
   });
 });
 
-socket.on('updateroom', function(rooms, room){
+socket.on('updateroom', function(rooms, room) {
   $('#rooms').empty();
   $.each(rooms, function(key, value){
     if (value === room){
@@ -49,14 +49,14 @@ socket.on('updateroom', function(rooms, room){
       $('#rooms').append(`<div><a href=# onClick=switchRoom('${value}')>${value}</a></div>`)
 
     }
-  })
-})
+  });
+});
 
-function switchRoom(room){
+function switchRoom(room) {
   socket.emit('switchroom', room);
 }
 
-$(function(){
+$(function() {
   var time = new Date().toLocaleString();
 
   $('form').on('submit', function() {
@@ -75,10 +75,10 @@ function notifyTyping(){
   socket.emit('notify user', user);
 };
 
-socket.on('notify user', function(user){
+socket.on('notify user', function(user) {
   var me = $('#user').val();
   if (me != user) {
     $('#notifyUser').text(user + ' is typing ...');
   }
-  setTimeout(function(){ $('#notifyUser').text(''); }, 1000);
-})
+  setTimeout(function() { $('#notifyUser').text(''); }, 1000);
+});

@@ -4,16 +4,21 @@
     <meta charset="utf-8">
     <title>Chat Application</title>
      <link rel='stylesheet' href='style.css' type='text/css'/>
-     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
-     <!-- <script src="http://localhost:5000/socket.io/socket.io.js"></script> -->
+     <!-- <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script> -->
+     <script src="http://localhost:5000/socket.io/socket.io.js"></script>
      <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
      <script src="chat.js"></script>
   </head>
   <body>
     <aside class='left'>
-      <div class='users-list'>
+      <div class='rooms-list'>
     	  <b>Rooms</b>
     	  <div id="rooms"></div>
+
+        <form id='room-form' action="" >
+         <input placeholder="Type yor message here.." />
+         <input type="submit" id="button" value="Send"/>
+        </form>
       </div>
       <div class='users-list'>
     	  <b>Users</b>
@@ -24,11 +29,9 @@
       <div class="chat">
         <div class="chat-history">
           <ul class="chat-ul">
-
           </ul>
         </div>
       </div>
-
     </aside>
 
 
