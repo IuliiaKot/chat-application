@@ -7,15 +7,15 @@ socket.on('chat message', function(from, msg, time, username) {
   if (username == 'switchroom') {
       $('.chat-ul').empty();
   };
-  
+
   $('#user').text(username);
   var me = $('#user').text();
   console.log(`${from}: from`);
   console.log(`${me}: me`);
   if (from === 'SERVER') {
-    divclassmessage ='server-message';
-    classDiv = '';
-    divClassTime = 'time-left-server';
+    var divclassmessage = 'server-message';
+    var classDiv = '';
+    var divClassTime = 'time-left-server';
   } else {
     var iclass = (from == me) ? 'me' : 'you';
     var divclassmessage = (from == me) ? 'me-message float-right' : 'you-message';
@@ -74,7 +74,7 @@ $(function() {
 
 });
 
-function notifyTyping(){
+function notifyTyping() {
   var user = $("#user").val();
   socket.emit('notify user', user);
 };
