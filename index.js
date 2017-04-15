@@ -3,6 +3,7 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var path = require('path');
+var messageModel = require('./message');
 
 var port = process.env.PORT || 5000;
 app.use(express.static(path.join(__dirname)));
@@ -15,9 +16,17 @@ var usernames = {};
 var rooms = ['general', 'nyc', 'sf'];
 
 io.on('connection', function(socket) {
+
   socket.on('send message', function(from, msg, time) {
-    console.log(time);
     io.sockets.in(socket.room).emit('chat message', socket.username, msg, time);
+    messageModel.message.create({
+                room: socket.room,
+                message : msg,
+                author: socket.username,
+                date    : time
+            }, function (err, rs) {
+                console.log(err);
+            });
   });
 
   socket.on('adduser', function(username) {
@@ -32,6 +41,15 @@ io.on('connection', function(socket) {
 
     io.emit('update-users-list', usernames);
     socket.emit('updateroom', rooms, 'general');
+
+    messageModel.message.find().limit(10).sort({_id: -1}).exec(function (err, results) {
+          results.reverse();
+          results.forEach(function (message) {
+              // client.emit('addMessage', message.nickname, message);
+              io.sockets.in('general').emit('chat message', message.author, message.message, message.date);
+              // console.log(message);
+          });
+      });
   });
 
   socket.on('switchroom', function(newRoom) {

@@ -4,6 +4,7 @@ socket.on('connect', function(){
 });
 
 socket.on('chat message', function(from, msg, time, username) {
+  console.log(msg)
   $('#user').text(username);
   var me = $('#user').text();
   console.log(`${from}: from`);
