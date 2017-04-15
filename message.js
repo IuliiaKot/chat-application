@@ -1,6 +1,7 @@
 var mongoose = require('mongoose')
 
-mongoose.connect("mongodb://localhost/nodechat");
+var uristring = process.env.MONGODB_URI || "mongodb://localhost/nodechat";
+mongoose.connect(uristring);
 
 var messageSchema = mongoose.Schema({
     room: String,
