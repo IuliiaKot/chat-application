@@ -24,12 +24,14 @@ socket.on('chat message', function(from, msg, time, username) {
     var from = (from == me) ? 'Me' : from;
   }
 
-  var text_template = `<li class='clearfix'>
+  var text_template = `<li class='clearfix col-sm-12'>
     <div class='message-data ${classDiv}'>
     <span class='message-data-name'><strong>${from}</strong></span>
     <i class='fa fa-circle ${iclass}'></i></div>
-    <div class='message ${divclassmessage}'>${msg}</div>
-    <span class='${divClassTime}'>${time}</span></li>`;
+    <div class='message ${divclassmessage}'>
+    <div class='${divClassTime}'>${time}</div>
+    ${msg}</div>
+    </li>`;
 
     $('.chat-ul').append(text_template)
     window.scrollBy(0, 1000)
@@ -59,6 +61,7 @@ socket.on('updateroom', function(rooms, room) {
 function switchRoom(room) {
   socket.emit('switchroom', room);
 }
+
 
 $(function() {
   var time = new Date().toLocaleString();

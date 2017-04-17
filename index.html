@@ -2,11 +2,16 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Chat Application</title>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+
      <link rel='stylesheet' href='style.css' type='text/css'/>
      <!-- <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script> -->
      <script src="http://localhost:5000/socket.io/socket.io.js"></script>
      <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
      <script src="chat.js"></script>
   </head>
   <body>
@@ -26,21 +31,22 @@
     </aside>
     <aside class='right'>
       <div class="chat">
-        <div class="chat-history">
+        <div class="chat-history panel-body body-panel">
           <ul class="chat-ul">
           </ul>
         </div>
       </div>
     </aside>
 
-
-    <ul id="messages"></ul>
     <span id="notifyUser"></span>
-    <form id="form" action="" >
-     <input type="hidden" id="user" value="" />
-     <input id="m" autocomplete="off" onkeyup="notifyTyping();" placeholder="Type yor message here.." />
+    <div class=''>
+      <form class="form-inline" id="form">
+        <input type="hidden" id="user" value="" />
+        <label class="sr-only" for="inlineFormInput">Name</label>
+        <input type="text" class="form-control col-md-10 col-sm-10" id="m" placeholder="Type yor message here..">
+        <input type="submit" id="button" class="btn btn-primary col-md-2 col-sm-2" value="Send"/>
 
-     <input type="submit" id="button" value="Send"/>
-    </form>
+      </form>
+    </div>
   </body>
 </html>
