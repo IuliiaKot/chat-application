@@ -26,13 +26,12 @@ function saveMessage(room, msg, username, time) {
           });
 };
 
-function loadMessages(currentRoom) {
+function loadMessages(currentRoom, channel) {
   console.log(currentRoom);
   messageModel.message.find({room: currentRoom}).limit(10).sort({_id: -1}).exec(function (err, results) {
         results.reverse();
         results.forEach(function (message) {
-            // client.emit('addMessage', message.nickname, message);
-            io.sockets.in(currentRoom).emit('chat message', message.author, message.message, message.date);
+            channel.emit('chat message', message.author, message.message, message.date);
             console.log(message);
         });
     });
@@ -46,6 +45,7 @@ io.on('connection', function(socket) {
   });
 
   socket.on('adduser', function(username) {
+    username = username.toLowerCase();
     socket.username = username;
     usernames[username] = username;
 
@@ -53,11 +53,11 @@ io.on('connection', function(socket) {
     socket.join('general');
 
     socket.emit('chat message', 'SERVER', `you have connected to ${'general'}`, new Date().toLocaleString(), username);
-    socket.broadcast.to('general').emit('chat message','SERVER', `${username} has connected to this room`);
+    socket.broadcast.to('general').emit('chat message', 'SERVER', `${username} has connected to this room`, new Date().toLocaleString());
 
     io.emit('update-users-list', usernames);
     socket.emit('updateroom', rooms, 'general');
-    loadMessages(socket.room);
+    loadMessages(socket.room, socket);
   });
 
   socket.on('switchroom', function(newRoom) {
@@ -66,7 +66,7 @@ io.on('connection', function(socket) {
     socket.emit('chat message', 'SERVER', `you have connected to ${newRoom}`, new Date().toLocaleString(), 'switchroom');
     socket.broadcast.to(socket.room).emit('chat message', 'SERVER', `${socket.username} has left this room`)
     socket.room = newRoom;
-    loadMessages(socket.room);
+    loadMessages(socket.room, io.sockets.in(socket.room));
     socket.broadcast.to(newRoom).emit('chat message', 'SERVER', `${socket.username} has joined this room`)
     socket.emit('updateroom', rooms, newRoom);
   });
