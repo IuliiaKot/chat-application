@@ -31,7 +31,7 @@ function loadMessages(currentRoom, channel) {
   messageModel.message.find({room: currentRoom}).limit(10).sort({_id: -1}).exec(function (err, results) {
         results.reverse();
         results.forEach(function (message) {
-            channel.emit('chat message', message.author, message.message, message.date);
+            channel.emit('chat message', message.author, message.message, message.date,'switchroom');
             console.log(message);
         });
     });
