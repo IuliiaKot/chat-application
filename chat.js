@@ -42,7 +42,7 @@ socket.on('update-users-list', function(data, username) {
   $('#user').val(username);
   $('#users').empty();
   $.each(data, function(key, value){
-    $('#users').append(`<div> ${key} </div>`);
+    $('#users').append(`<a href=# class='list-group-item disabled'> ${key} </a>`);
   });
 });
 
@@ -50,9 +50,9 @@ socket.on('updateroom', function(rooms, room) {
   $('#rooms').empty();
   $.each(rooms, function(key, value){
     if (value === room){
-        $('#rooms').append(`<div> ${value} </div>`)
+        $('#rooms').append(`<a href=# class='list-group-item active'> ${value} </a>`)
     } else {
-      $('#rooms').append(`<div><a href=# onClick=switchRoom('${value}')>${value}</a></div>`)
+      $('#rooms').append(`<a href=#  class='list-group-item list-group-item-action' onClick=switchRoom('${value}')>${value}</a>`)
 
     }
   });

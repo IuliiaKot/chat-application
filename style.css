@@ -32,7 +32,7 @@ body {
 #form #button {
   border-radius: 0px 6px 6px 0px;
   color:white;
-  background: #F0AD4E;
+  /*background: #F0AD4E;*/
   border: none;
   padding: 10px;
   /*width: 9%;*/
@@ -193,8 +193,9 @@ h1, h2, h3, h4, h5, h6 {
   /*width:100px;*/
   /*height:300px;*/
   padding:10px;
-  overflow:scroll-y;
-  position: fixed;
+  /*overflow-y:scroll;*/
+  /*overflow:scroll-y;*/
+  /*position: fixed;*/
 }
 
 
@@ -202,8 +203,11 @@ h1, h2, h3, h4, h5, h6 {
   float: left;
   width: 20%;
   height: 100%;
+  overflow:scroll-y;
+  position: fixed;
   /*border-right:1px solid black;*/
 }
+
 
 .right {
   float: right;

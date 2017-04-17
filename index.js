@@ -38,6 +38,7 @@ function loadMessages(currentRoom, channel) {
 }
 
 io.on('connection', function(socket) {
+  var time = new Date().toLocaleString();
 
   socket.on('send message', function(from, msg, time) {
     io.sockets.in(socket.room).emit('chat message', socket.username, msg, time);
@@ -45,6 +46,7 @@ io.on('connection', function(socket) {
   });
 
   socket.on('adduser', function(username) {
+
     username = username.toLowerCase();
     socket.username = username;
     usernames[username] = username;
@@ -52,8 +54,8 @@ io.on('connection', function(socket) {
     socket.room = 'general';
     socket.join('general');
 
-    socket.emit('chat message', 'SERVER', `you have connected to ${'general'}`, new Date().toLocaleString(), username);
-    socket.broadcast.to('general').emit('chat message', 'SERVER', `${username} has connected to this room`, new Date().toLocaleString());
+    socket.emit('chat message', 'SERVER', `you have connected to ${'general'}`, time, username);
+    socket.broadcast.to('general').emit('chat message', 'SERVER', `${username} has connected to this room`, time);
 
     io.emit('update-users-list', usernames);
     socket.emit('updateroom', rooms, 'general');
@@ -63,11 +65,11 @@ io.on('connection', function(socket) {
   socket.on('switchroom', function(newRoom) {
     socket.leave(socket.room);
     socket.join(newRoom);
-    socket.emit('chat message', 'SERVER', `you have connected to ${newRoom}`, new Date().toLocaleString());
-    socket.broadcast.to(socket.room).emit('chat message', 'SERVER', `${socket.username} has left this room`, new Date().toLocaleString())
+    socket.emit('chat message', 'SERVER', `you have connected to ${newRoom}`, new Date().toLocaleString(), 'switchroom');
+    socket.broadcast.to(socket.room).emit('chat message', 'SERVER', `${socket.username} has left this room`, time)
     socket.room = newRoom;
-    loadMessages(socket.room, io.sockets.in(socket.room));
-    socket.broadcast.to(newRoom).emit('chat message', 'SERVER', `${socket.username} has joined this room`, new Date().toLocaleString())
+    loadMessages(socket.room, socket.broadcast.to(socket.room));
+    socket.broadcast.to(newRoom).emit('chat message', 'SERVER', `${socket.username} has joined this room`, time)
     socket.emit('updateroom', rooms, newRoom);
   });
 
@@ -78,7 +80,7 @@ io.on('connection', function(socket) {
   socket.on('disconnect', function() {
     delete usernames[socket.username];
     io.emit('update-users-list', usernames);
-    socket.broadcast.to(socket.room).emit('chat message', 'SERVER', `${socket.username} has disconnected`, new Date().toLocaleString())
+    socket.broadcast.to(socket.room).emit('chat message', 'SERVER', `${socket.username} has disconnected`, time)
     socket.leave(socket.room);
   });
 });

@@ -7,8 +7,8 @@
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
 
      <link rel='stylesheet' href='style.css' type='text/css'/>
-     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
-     <!-- <script src="http://localhost:5000/socket.io/socket.io.js"></script> -->
+     <!-- <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script> -->
+     <script src="http://localhost:5000/socket.io/socket.io.js"></script>
      <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
@@ -16,18 +16,20 @@
   </head>
   <body>
     <aside class='left'>
-      <aside class="rooms-left">
+      <!-- <aside class="rooms-left"> -->
         <div class='rooms-list'>
-      	  <b>Rooms</b>
-      	  <div id="rooms"></div>
+          <h4>Rooms</h4>
+          <div class="list-group col-md-12" id="rooms">
+          </div>
         </div>
-      </aside>
-      <aside class="users-left">
+      <!-- </aside> -->
+      <!-- <aside class="users-left"> -->
         <div class='users-list'>
-      	  <b>Users</b>
-      	  <div id="users"></div>
+          <h4>Users</h4>
+          <div class="list-group col-md-12" id="users">
+          </div>
         </div>
-      </aside>
+      <!-- </aside> -->
     </aside>
     <aside class='right'>
       <div class="chat">
@@ -44,7 +46,7 @@
         <input type="hidden" id="user" value="" />
         <label class="sr-only" for="inlineFormInput">Name</label>
         <input type="text" class="form-control col-md-10 col-sm-10" id="m" placeholder="Type yor message here..">
-        <input type="submit" id="button" class="btn btn-primary col-md-2 col-sm-2" value="Send"/>
+        <input type="submit" id="button" class="btn btn-info col-md-2 col-sm-2" value="Send"/>
 
       </form>
     </div>
