@@ -4,28 +4,32 @@ socket.on('connect', function(){
 });
 
 socket.on('chat message', function(from, msg, time, username) {
+  if (username == 'switchroom') {
+      $('.chat-ul').empty();
+  };
+
   $('#user').text(username);
   var me = $('#user').text();
   console.log(`${from}: from`);
   console.log(`${me}: me`);
   if (from === 'SERVER') {
-    divclassmessage ='server-message';
-    classDiv = '';
-    divClassTime = 'time-left-server';
+    var divclassmessage = 'server-message';
+    var classDiv = '';
+    var divClassTime = 'time-left-server';
   } else {
     var iclass = (from == me) ? 'me' : 'you';
     var divclassmessage = (from == me) ? 'me-message float-right' : 'you-message';
-    var classDiv = (from == me) ? 'align-right':'';
-    var divClassTime = (from == me) ? 'time-right':'time-left';
+    var classDiv = (from == me) ? 'align-right' : '';
+    var divClassTime = (from == me) ? 'time-right' : 'time-left';
     var from = (from == me) ? 'Me' : from;
   }
 
   var text_template = `<li class='clearfix'>
     <div class='message-data ${classDiv}'>
-    <span class='message-data-name'>${from}</span>
+    <span class='message-data-name'><strong>${from}</strong></span>
     <i class='fa fa-circle ${iclass}'></i></div>
     <div class='message ${divclassmessage}'>${msg}</div>
-    <span class='${divClassTime}'>${time}</span></li>`
+    <span class='${divClassTime}'>${time}</span></li>`;
 
     $('.chat-ul').append(text_template)
     window.scrollBy(0, 1000)
@@ -70,7 +74,7 @@ $(function() {
 
 });
 
-function notifyTyping(){
+function notifyTyping() {
   var user = $("#user").val();
   socket.emit('notify user', user);
 };
