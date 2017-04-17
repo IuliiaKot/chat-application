@@ -64,10 +64,10 @@ io.on('connection', function(socket) {
     socket.leave(socket.room);
     socket.join(newRoom);
     socket.emit('chat message', 'SERVER', `you have connected to ${newRoom}`, new Date().toLocaleString(), 'switchroom');
-    socket.broadcast.to(socket.room).emit('chat message', 'SERVER', `${socket.username} has left this room`)
+    socket.broadcast.to(socket.room).emit('chat message', 'SERVER', `${socket.username} has left this room`, new Date().toLocaleString())
     socket.room = newRoom;
     loadMessages(socket.room, io.sockets.in(socket.room));
-    socket.broadcast.to(newRoom).emit('chat message', 'SERVER', `${socket.username} has joined this room`)
+    socket.broadcast.to(newRoom).emit('chat message', 'SERVER', `${socket.username} has joined this room`, new Date().toLocaleString())
     socket.emit('updateroom', rooms, newRoom);
   });
 
