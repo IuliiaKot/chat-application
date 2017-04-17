@@ -31,7 +31,7 @@ function loadMessages(currentRoom, channel) {
   messageModel.message.find({room: currentRoom}).limit(10).sort({_id: -1}).exec(function (err, results) {
         results.reverse();
         results.forEach(function (message) {
-            channel.emit('chat message', message.author, message.message, message.date,'switchroom');
+            channel.emit('chat message', message.author, message.message, message.date);
             console.log(message);
         });
     });
@@ -63,7 +63,7 @@ io.on('connection', function(socket) {
   socket.on('switchroom', function(newRoom) {
     socket.leave(socket.room);
     socket.join(newRoom);
-    socket.emit('chat message', 'SERVER', `you have connected to ${newRoom}`, new Date().toLocaleString(), 'switchroom');
+    socket.emit('chat message', 'SERVER', `you have connected to ${newRoom}`, new Date().toLocaleString());
     socket.broadcast.to(socket.room).emit('chat message', 'SERVER', `${socket.username} has left this room`, new Date().toLocaleString())
     socket.room = newRoom;
     loadMessages(socket.room, io.sockets.in(socket.room));
