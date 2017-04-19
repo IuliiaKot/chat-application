@@ -41,8 +41,12 @@ socket.on('update-users-list', function(data, username) {
 
   $('#user').val(username);
   $('#users').empty();
-  $.each(data, function(key, value){
-    $('#users').append(`<a href=# class='list-group-item disabled'> ${key} </a>`);
+  $.each(data, function(key, value) {
+    if (key == username) {
+      $('#users').append(`<a href=# class='list-group-item ' onClick=directMessage('${data[username]}','${value}')> ${key} </a>`);
+    } else {
+      $('#users').append(`<a href=# class='list-group-item list-group-item-action' onClick=directMessage('${data[username]}','${value}')>${key}</a>`);
+    };
   });
 });
 
@@ -58,8 +62,18 @@ socket.on('updateroom', function(rooms, room) {
   });
 });
 
+socket.on('private room created', function(msg) {
+  console.log('pricate');
+  $('.chat-ul').empty();
+  $('.chat-ul').append(`<div>${msg}</div>`);
+});
+
 function switchRoom(room) {
   socket.emit('switchroom', room);
+}
+
+function directMessage(from, to) {
+  socket.emit('initiate private message', from, to)
 }
 
 

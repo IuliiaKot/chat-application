@@ -49,7 +49,7 @@ io.on('connection', function(socket) {
 
     username = username.toLowerCase();
     socket.username = username;
-    usernames[username] = username;
+    usernames[username] = socket.id;
 
     socket.room = 'general';
     socket.join('general');
@@ -57,7 +57,7 @@ io.on('connection', function(socket) {
     socket.emit('chat message', 'SERVER', `you have connected to ${'general'}`, time, username);
     socket.broadcast.to('general').emit('chat message', 'SERVER', `${username} has connected to this room`, time);
 
-    io.emit('update-users-list', usernames);
+    io.emit('update-users-list', usernames, username);
     socket.emit('updateroom', rooms, 'general');
     loadMessages(socket.room, socket);
   });
@@ -73,6 +73,26 @@ io.on('connection', function(socket) {
     socket.emit('updateroom', rooms, newRoom);
   });
 
+
+  socket.on('initiate private message', function(userFrom, userTo) {
+    var receiverSocketId = userTo;
+    var receiverName = findUser(userTo);
+    var room = getARoom(findUser(socket.id, receiverName));
+    socket.join(room);
+    socket.room = room;
+    // socket[receiverSocketId].join(room);
+    io.sockets.in(room).emit('private room created', 'private room was created');
+    // socket.broadcast.to(socket.room).emit('private')
+    console.log(receiverSocketId);
+    console.log(receiverName);
+    console.log(room)
+    // console.log(io.sockets.connected[receiverSocketId]);
+  });
+
+  socket.on('send private message', function(id, message) {
+    socket.broadcast.to(id).emit('private chat created', message);
+});
+
   socket.on('notify user', function(user) {
     io.emit('notify user', user)
   });
@@ -85,6 +105,18 @@ io.on('connection', function(socket) {
   });
 });
 
+
+function findUser(id) {
+  for (name in usernames) {
+    if (usernames[name] == id) {
+      return name;
+    }
+  }
+};
+
+function getARoom(user1, user2) {
+  return 'privateRooom' + user1 + "And" + user2;
+}
 
 http.listen(port, function() {
   console.log("listening on 5000");
