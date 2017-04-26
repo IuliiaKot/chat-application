@@ -38,7 +38,6 @@ socket.on('chat message', function(from, msg, time, username) {
 });
 
 socket.on('update-users-list', function(data, username) {
-
   $('#user').val(username);
   $('#users').empty();
   $.each(data, function(key, value) {
@@ -63,7 +62,7 @@ socket.on('updateroom', function(rooms, room) {
 });
 
 socket.on('private room created', function(msg) {
-  console.log('pricate');
+  console.log('private');
   $('.chat-ul').empty();
   $('.chat-ul').append(`<div>${msg}</div>`);
 });
@@ -90,6 +89,21 @@ $(function() {
   });
 
 });
+
+socket.on('notify-messages', function(id, from, to){
+  console.log('notify user about messages')
+  var usersList = $('#users').find('a');
+  console.log(usersList)
+  console.log(usersList.length)
+  console.log(to)
+  for(var i = 0; i < usersList.length; i++){
+    user = $(usersList[i]).text();
+
+    if (user == to){
+      $(usersList[i]).append("<div id='notification-messages'></div>");  
+    }
+  }
+})
 
 function notifyTyping() {
   var user = $("#user").val();

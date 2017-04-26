@@ -47,7 +47,7 @@ io.on('connection', function(socket) {
 
   socket.on('adduser', function(username) {
 
-    username = username.toLowerCase();
+    username = (username) ? username.toLowerCase() : 'test';
     socket.username = username;
     usernames[username] = socket.id;
 
@@ -77,19 +77,27 @@ io.on('connection', function(socket) {
   socket.on('initiate private message', function(userFrom, userTo) {
     var receiverSocketId = userTo;
     var receiverName = findUser(userTo);
-    var room = getARoom(findUser(socket.id, receiverName));
+    var senderName = findUser(userFrom);
+    var room = getARoom(receiverSocketId, receiverName, senderName);
     socket.join(room);
     socket.room = room;
     // socket[receiverSocketId].join(room);
     io.sockets.in(room).emit('private room created', 'private room was created');
-    // socket.broadcast.to(socket.room).emit('private')
+    socket.broadcast.to(`${userTo}`).emit("notify-messages", '5','6',receiverName)
+    // socket.broadcast.to(`${userTo}`).emit('private room created', 'private room was created');
+    // socket.broadcast.to(socket.room).emit('private room created', 'private room ws created');
     console.log(receiverSocketId);
     console.log(receiverName);
     console.log(room)
     // console.log(io.sockets.connected[receiverSocketId]);
   });
 
+  socket.on('notify-messages', function(id, from, to){
+    console.log('notify user about messages')
+  })
+
   socket.on('send private message', function(id, message) {
+    console.log('private room')
     socket.broadcast.to(id).emit('private chat created', message);
 });
 
@@ -114,8 +122,8 @@ function findUser(id) {
   }
 };
 
-function getARoom(user1, user2) {
-  return 'privateRooom' + user1 + "And" + user2;
+function getARoom(id, user1, user2) {
+  return `${id}_${user1}_${user2}`;
 }
 
 http.listen(port, function() {
