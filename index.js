@@ -83,18 +83,14 @@ io.on('connection', function(socket) {
     socket.room = room;
     // socket[receiverSocketId].join(room);
     io.sockets.in(room).emit('private room created', 'private room was created');
-    socket.broadcast.to(`${userTo}`).emit("notify-messages", '5','6',receiverName)
+    socket.broadcast.to(`${userTo}`).emit("notify-messages", '5', senderName, receiverName)
+
+    // socket.to(userTo).emit('chat message', 'I just met you', '');
     // socket.broadcast.to(`${userTo}`).emit('private room created', 'private room was created');
     // socket.broadcast.to(socket.room).emit('private room created', 'private room ws created');
-    console.log(receiverSocketId);
-    console.log(receiverName);
-    console.log(room)
     // console.log(io.sockets.connected[receiverSocketId]);
   });
 
-  socket.on('notify-messages', function(id, from, to){
-    console.log('notify user about messages')
-  })
 
   socket.on('send private message', function(id, message) {
     console.log('private room')

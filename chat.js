@@ -10,8 +10,6 @@ socket.on('chat message', function(from, msg, time, username) {
 
   $('#user').text(username);
   var me = $('#user').text();
-  console.log(`${from}: from`);
-  console.log(`${me}: me`);
   if (from === 'SERVER') {
     var divclassmessage = 'server-message';
     var classDiv = '';
@@ -42,7 +40,7 @@ socket.on('update-users-list', function(data, username) {
   $('#users').empty();
   $.each(data, function(key, value) {
     if (key == username) {
-      $('#users').append(`<a href=# class='list-group-item ' onClick=directMessage('${data[username]}','${value}')> ${key} </a>`);
+      $('#users').append(`<a href=# class='list-group-item ' onClick=directMessage('${data[username]}','${value}')>${key}</a>`);
     } else {
       $('#users').append(`<a href=# class='list-group-item list-group-item-action' onClick=directMessage('${data[username]}','${value}')>${key}</a>`);
     };
@@ -93,14 +91,11 @@ $(function() {
 socket.on('notify-messages', function(id, from, to){
   console.log('notify user about messages')
   var usersList = $('#users').find('a');
-  console.log(usersList)
-  console.log(usersList.length)
-  console.log(to)
   for(var i = 0; i < usersList.length; i++){
     user = $(usersList[i]).text();
-
-    if (user == to){
-      $(usersList[i]).append("<div id='notification-messages'></div>");  
+    console.log(from);
+    if (user == from){
+      // $(usersList[i]).append("<div id='notification-messages'></div>");
     }
   }
 })
