@@ -90,7 +90,7 @@ body {
   font-size: 16px;
   border-radius: 5px;
   margin-bottom: 30px;
-  width: 90%;
+  width: 70%;
   position: relative;
 }
 .chat .chat-history .message:after {
@@ -109,7 +109,9 @@ body {
   color:#003366;
 }
 .chat .chat-history .me-message {
-  background: #E9724C;
+  background: #acb5c4;
+  color:#003366;
+  /*E9724C*/
   text-align: right;
 }
 .chat .chat-history .server-message {
@@ -117,7 +119,7 @@ body {
   text-align: right;
 }
 .chat .chat-history .me-message:after {
-  border-color: #E9724C transparent;
+  border-color: #acb5c4 transparent;
     right: 20px;
     top: -15px;
     left: auto;
