@@ -287,3 +287,10 @@ h1, h2, h3, h4, h5, h6 {
 .chat.page {
   display: none;
 }
+
+
+#m:focus{
+  outline: none !important;
+    border-color: #719ECE;
+    box-shadow: 0 0 10px #719ECE;
+}

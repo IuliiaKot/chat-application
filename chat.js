@@ -107,6 +107,7 @@ function setUsername(){
   if (username){
     $('.login.page').fadeOut();
     $('.chat.page').show();
+    $('#m').focus();
     socket.emit('adduser', username)
   }
 }
