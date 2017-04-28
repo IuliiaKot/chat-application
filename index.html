@@ -15,37 +15,47 @@
      <script src="chat.js"></script>
   </head>
   <body>
+  <ul class="pages">
+    <li class="chat page">
+      <aside class='left'>
+          <div class='rooms-list'>
+            <h4>Rooms</h4>
+            <div class="list-group col-md-12" id="rooms">
+            </div>
+          </div>
+          <div class='users-list'>
+            <h4>Users</h4>
+            <div class="list-group col-md-12" id="users">
+            </div>
+          </div>
 
-    <aside class='left'>
-        <div class='rooms-list'>
-          <h4>Rooms</h4>
-          <div class="list-group col-md-12" id="rooms">
+      </aside>
+      <aside class='right'>
+        <div class="chat">
+          <div class="chat-history panel-body body-panel">
+            <ul class="chat-ul">
+            </ul>
           </div>
         </div>
-        <div class='users-list'>
-          <h4>Users</h4>
-          <div class="list-group col-md-12" id="users">
-          </div>
-        </div>
+      </aside>
 
-    </aside>
-    <aside class='right'>
-      <div class="chat">
-        <div class="chat-history panel-body body-panel">
-          <ul class="chat-ul">
-          </ul>
-        </div>
+      <span id="notifyUser"></span>
+      <div class=''>
+        <form class="form-inline" id="form">
+          <input type="hidden" id="user" value="" />
+          <label class="sr-only" for="inlineFormInput">Name</label>
+          <input type="text" autocomplete="off" class="form-control col-md-10 col-sm-10" id="m" placeholder="Type yor message here.." required="true">
+          <input type="submit" id="button" class="btn btn-primary col-md-2 col-sm-2" value="Send"/>
+        </form>
       </div>
-    </aside>
+    </li>
+    <li class="login page">
+      <div class="form">
+        <h3 class="title">What's your nickname?</h3>
+        <input class="usernameInput" type="text" maxlength="14" />
+      </div>
+    </li>
+  </ul>
 
-    <span id="notifyUser"></span>
-    <div class=''>
-      <form class="form-inline" id="form">
-        <input type="hidden" id="user" value="" />
-        <label class="sr-only" for="inlineFormInput">Name</label>
-        <input type="text" autocomplete="off" class="form-control col-md-10 col-sm-10" id="m" placeholder="Type yor message here.." required="true">
-        <input type="submit" id="button" class="btn btn-primary col-md-2 col-sm-2" value="Send"/>
-      </form>
-    </div>
   </body>
 </html>

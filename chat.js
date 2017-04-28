@@ -1,14 +1,12 @@
 var socket = io();
-socket.on('connect', function(){
-  socket.emit('adduser', prompt('What is your name?'));
-});
 
 socket.on('chat message', function(from, msg, time, username) {
+  debugger
   if (username == 'switchroom') {
       $('.chat-ul').empty();
   };
 
-  $('#user').text(username);
+  // $('#user').text(username);
   var me = $('#user').text();
   console.log(`${from}: from`);
   console.log(`${me}: me`);
@@ -39,7 +37,7 @@ socket.on('chat message', function(from, msg, time, username) {
 
 socket.on('update-users-list', function(data, username) {
 
-  $('#user').val(username);
+  $('#user').text(username);
   $('#users').empty();
   $.each(data, function(key, value) {
     if (key == username) {
@@ -78,6 +76,7 @@ function directMessage(from, to) {
 
 
 $(function() {
+  $('.usernameInput').focus();
   var time = new Date().toLocaleString();
 
   $('form').on('submit', function() {
@@ -89,12 +88,28 @@ $(function() {
     return false;
   });
 
+  $('.usernameInput').keyup(function(event){
+    if (event.keyCode === 13){
+      setUsername();
+    }
+  })
+
 });
 
 function notifyTyping() {
   var user = $("#user").val();
   socket.emit('notify user', user);
 };
+
+
+function setUsername(){
+  username = $('.usernameInput').val();
+  if (username){
+    $('.login.page').fadeOut();
+    $('.chat.page').show();
+    socket.emit('adduser', username)
+  }
+}
 
 socket.on('notify user', function(user) {
   var me = $('#user').val();
