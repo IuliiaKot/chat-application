@@ -52,22 +52,9 @@ body {
 #notifyUser { position: fixed; bottom: 42px; width: 100%; }
 
 .server-message {
-  background: grey;
+  /*background: grey;*/
   font-style:italic;
 }
-.server-message::after{
-  /*background: grey;*/
-  /*margin-bottom: 15px;*/
-}
-
-.time-left-server {
-  color:  grey;
-  float: left;
-}
-
-
-
-
 
 
 /*/////////////////*/
@@ -115,22 +102,24 @@ body {
   text-align: right;
 }
 .chat .chat-history .server-message {
-  background: #ccc;
-  text-align: right;
+  /*background: #ccc;*/
+  text-align: center;
+  padding: 20px;
+  margin-bottom: 30px;
 }
 .chat .chat-history .me-message:after {
   border-color: #acb5c4 transparent;
-    right: 20px;
-    top: -15px;
-    left: auto;
-    bottom:auto;
+  right: 20px;
+  top: -15px;
+  left: auto;
+  bottom:auto;
 }
 .chat .chat-history .server-message:after {
   border-color: #ccc transparent;
-    right: 20px;
-    top: -15px;
-    left: auto;
-    bottom:auto;
+  right: 20px;
+  top: -15px;
+  left: auto;
+  bottom:auto;
 }
 .chat .chat-message {
   padding: 30px;
@@ -178,8 +167,13 @@ h1, h2, h3, h4, h5, h6 {
     color: #003366;
 }
 
-.time-right, .time-left-server   {
+.time-right   {
   text-align: left;
+  font-size: 12px;
+  color: grey;
+}
+.time-server   {
+  text-align: center;
   font-size: 12px;
   color: grey;
 }
@@ -245,7 +239,7 @@ h1, h2, h3, h4, h5, h6 {
 /* Login Page */
 
 .login.page {
-  background-color: #000;
+  background-color: #182335;
 }
 
 .login.page .form {

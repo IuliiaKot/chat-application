@@ -47,7 +47,7 @@ io.on('connection', function(socket) {
 
   socket.on('adduser', function(username) {
 
-    // username = username.toLowerCase();
+    username = username.toLowerCase();
     socket.username = username;
     usernames[username] = socket.id;
 

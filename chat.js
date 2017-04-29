@@ -1,22 +1,22 @@
 var socket = io();
 
 socket.on('chat message', function(from, msg, time, username) {
-  debugger
   if (username == 'switchroom') {
       $('.chat-ul').empty();
   };
-
+  debugger
   // $('#user').text(username);
   var me = $('#user').text();
   console.log(`${from}: from`);
   console.log(`${me}: me`);
   if (from === 'SERVER') {
+    from = '';
     var divclassmessage = 'server-message';
     var classDiv = '';
-    var divClassTime = 'time-left-server';
+    var divClassTime = 'time-server';
   } else {
     var iclass = (from == me) ? 'me' : 'you';
-    var divclassmessage = (from == me) ? 'me-message float-right' : 'you-message';
+    var divclassmessage = (from == me) ? 'message me-message float-right' : 'message you-message';
     var classDiv = (from == me) ? 'align-right' : '';
     var divClassTime = (from == me) ? 'time-right' : 'time-left';
     var from = (from == me) ? 'Me' : from;
@@ -26,7 +26,7 @@ socket.on('chat message', function(from, msg, time, username) {
     <div class='message-data ${classDiv}'>
     <span class='message-data-name'><strong>${from}</strong></span>
     <i class='fa fa-circle ${iclass}'></i></div>
-    <div class='message ${divclassmessage}'>
+    <div class='${divclassmessage}'>
     <div class='${divClassTime}'>${time}</div>
     ${msg}</div>
     </li>`;
@@ -37,7 +37,7 @@ socket.on('chat message', function(from, msg, time, username) {
 
 socket.on('update-users-list', function(data, username) {
 
-  $('#user').text(username);
+  // $('#user').text(username);
   $('#users').empty();
   $.each(data, function(key, value) {
     if (key == username) {
@@ -108,6 +108,7 @@ function setUsername(){
     $('.login.page').fadeOut();
     $('.chat.page').show();
     $('#m').focus();
+    $('#user').text(username);
     socket.emit('adduser', username)
   }
 }
