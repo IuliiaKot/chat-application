@@ -120,3 +120,11 @@ socket.on('notify user', function(user) {
   }
   setTimeout(function() { $('#notifyUser').text(''); }, 1000);
 });
+
+// socket.on('repeat login', function(msg){
+//   $('.chat.page').hide();
+//   $('.login.page').fadeIn();
+//   $('.error').text(msg);
+//   $('.usernameInput').focus();
+//   console.log(msg)
+// })

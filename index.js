@@ -14,6 +14,7 @@ app.get('/', function(req, res) {
 
 var usernames = {};
 var rooms = ['general', 'nyc', 'sf'];
+var users = [];
 
 function saveMessage(room, msg, username, time) {
   messageModel.message.create({
@@ -39,6 +40,9 @@ function loadMessages(currentRoom, channel) {
 
 io.on('connection', function(socket) {
   var time = new Date().toLocaleString();
+  messageModel.message.find({}).distinct("author", function(err, usr){
+    users = usr;
+  });
 
   socket.on('send message', function(from, msg, time) {
     io.sockets.in(socket.room).emit('chat message', socket.username, msg, time);
@@ -46,20 +50,25 @@ io.on('connection', function(socket) {
   });
 
   socket.on('adduser', function(username) {
-
     username = username.toLowerCase();
-    socket.username = username;
-    usernames[username] = socket.id;
+    // if (users.includes(username)) {
+    //   console.log("username already taken")
+    //   socket.emit('repeat login', 'username already taken')
+    // } else {
+      console.log(users);
+      socket.username = username;
+      usernames[username] = socket.id;
 
-    socket.room = 'general';
-    socket.join('general');
+      socket.room = 'general';
+      socket.join('general');
 
-    socket.emit('chat message', 'SERVER', `you have connected to ${'general'}`, time, username);
-    socket.broadcast.to('general').emit('chat message', 'SERVER', `${username} has connected to this room`, time);
+      socket.emit('chat message', 'SERVER', `you have connected to ${'general'}`, time, username);
+      socket.broadcast.to('general').emit('chat message', 'SERVER', `${username} has connected to this room`, time);
 
-    io.emit('update-users-list', usernames, username);
-    socket.emit('updateroom', rooms, 'general');
-    loadMessages(socket.room, socket);
+      io.emit('update-users-list', usernames, username);
+      socket.emit('updateroom', rooms, 'general');
+      loadMessages(socket.room, socket);
+    // };
   });
 
   socket.on('switchroom', function(newRoom) {
