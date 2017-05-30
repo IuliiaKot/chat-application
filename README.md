@@ -1,6 +1,8 @@
 # chat-application
 
 ## Real Chat App
+[live](https://pacific-hamlet-60460.herokuapp.com/)
+
 Simple chat app, with ability to switch between rooms. For every room app load inly last 10 messages. 
 It also stores all the messages in the a mongoDb database
 
