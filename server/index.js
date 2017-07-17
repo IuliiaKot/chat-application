@@ -3,14 +3,15 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var path = require('path');
-var messageModel = require('./message');
+var messageModel = require('../message');
 
 var port = process.env.PORT || 5000;
-app.use(express.static(path.join(__dirname)));
+const publicPath = path.join(__dirname, '../public');
+app.use(express.static(path.join(publicPath)));
 
-app.get('/', function(req, res) {
-  res.sendFile(path.join(__dirname, '../chat-application', 'index.html'))
-});
+// app.get('/', function(req, res) {
+//   res.sendFile(path.join(__dirname, '../public', 'index.html'))
+// });
 
 var usernames = {};
 var rooms = ['general', 'nyc', 'sf'];
@@ -47,7 +48,7 @@ io.on('connection', function(socket) {
 
   socket.on('adduser', function(username) {
     username = username.toLowerCase();
-    console.log(users);
+    // console.log(users);
     socket.username = username;
     usernames[username] = socket.id;
 
